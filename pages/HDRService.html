@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HDR-Service</title>
+
+  <!-- Tailwind CDN (quick prototyping) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root{
+      --bg1:#0f0f1e;
+      --bg2:#1a1a2e;
+    }
+
+    html,body {
+      height: 100%;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--bg2), var(--bg1));
+      color: #fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+    }
+
+    /* small custom utilities used in markup */
+    .hover-scale { transition: transform .25s ease; }
+    .hover-scale:hover { transform: translateZ(0) scale(1.05); }
+    .hover-scale-lg { transition: transform .28s ease; }
+    .hover-scale-lg:hover { transform: translateZ(0) scale(1.12); }
+
+    /* fallback for backdrop-filter in browsers that don't support it */
+    @supports not ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+      .backdrop-blur-fallback { background-color: rgba(255,255,255,0.05); }
+    }
+
+    /* fade-in keyframe */
+    @keyframes fadeInUp {
+      from { opacity:0; transform: translateY(18px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .fade-in-up { animation: fadeInUp .56s cubic-bezier(.2,.9,.2,1) both; }
+
+    /* respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in-up, .hover-scale, .hover-scale-lg { animation: none !important; transition: none !important; }
+    }
+
+    /* small dot sizing helper for consistent styling in JS */
+    .dot-size { width:1.5rem; height:1.5rem; }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen pt-8">
+    <!-- Back -->
+    <div class="container mx-auto px-6">
+      <a href="../index.html" class="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors" aria-label="Back to Home">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        <span>Back to Home</span>
+      </a>
+    </div>
+
+    <!-- HERO -->
+    <header class="container mx-auto px-6 py-12">
+      <div class="text-center max-w-4xl mx-auto fade-in-up">
+        <div class="flex justify-center mb-6">
+          <!-- <div class="p-4 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl border border-purple-500/30">
+            <svg class="w-16 h-16 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div> -->
+        </div>
+
+        <h1 id="service-title" class="text-4xl sm:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+            HDR-Service
+        </h1>
+        <p id="service-subtitle" class="mt-4 text-xl text-white/70">Premium Quality Solutions</p>
+        <p id="service-description" class="mt-4 text-base sm:text-lg text-white/60 max-w-3xl mx-auto">
+          
+          Transform your vision into reality with our professional  processing and enhancement services. We deliver exceptional results tailored to your needs.
+        </p>
+      </div>
+    </header>
+
+    <!-- FEATURED IMAGE -->
+    <section class="container mx-auto px-6 py-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10">
+          <h2 class="text-3xl sm:text-4xl font-semibold">Image</h2>
+          <p class="text-base sm:text-lg text-white/70 max-w-2xl mx-auto mt-3">
+            Experience the transformation power of our professional services.
+          </p>
+        </div>
+
+        <div class="relative group p-5">
+          <div class="aspect-[16/9] bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl overflow-hidden shadow-2xl border border-white/10 transform scale-[1.02]">
+            <img
+              src="../assets/hdr aft.webp"
+              alt="Featured transformation"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              decoding="async"
+            />
+
+            <!-- overlay -->
+            <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div class="absolute bottom-8 left-8 right-8">
+                <div class="bg-white/8 backdrop-blur-md backdrop-blur-fallback rounded-2xl p-6 border border-white/10">
+                  <h3 class="text-2xl font-semibold text-white mb-1">Professional Results</h3>
+                  <p class="text-white/90">Premium quality enhancement</p>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <!-- decorative blobs -->
+          <div class="absolute -top-6 -left-6 w-24 h-24 rounded-full blur-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 pointer-events-none"></div>
+          <div class="absolute -bottom-6 -right-6 w-32 h-32 rounded-full blur-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 pointer-events-none"></div>
+
+          <!-- stats (visible on lg+) -->
+          <div class="hidden lg:block absolute -left-8 top-1/2 -translate-y-1/2">
+            <div class="bg-white/6 backdrop-blur-md backdrop-blur-fallback rounded-2xl p-5 border border-white/10 shadow-lg">
+              <div class="text-center">
+                <div class="text-2xl font-bold text-purple-300">24/7</div>
+                <div class="text-xs text-white/70">Support</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden lg:block absolute -right-8 top-1/3 -translate-y-1/2">
+            <div class="bg-white/6 backdrop-blur-md backdrop-blur-fallback rounded-2xl p-5 border border-white/10 shadow-lg">
+              <div class="text-center">
+                <div class="text-2xl font-bold text-green-300">100%</div>
+                <div class="text-xs text-white/70">Quality</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden lg:block absolute -right-8 bottom-1/3 translate-y-1/2">
+            <div class="bg-white/6 backdrop-blur-md backdrop-blur-fallback rounded-2xl p-5 border border-white/10 shadow-lg">
+              <div class="text-center">
+                <div class="text-2xl font-bold text-pink-300">Fast</div>
+                <div class="text-xs text-white/70">Delivery</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+      </div>
+    </section>
+
+    <!-- BENEFITS -->
+    <section class="container mx-auto px-6 py-10">
+      <h2 class="text-2xl sm:text-3xl font-semibold text-center mb-8">Key Benefits</h2>
+
+      <div id="benefits-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="container mx-auto px-6 py-10">
+      <h2 class="text-2xl sm:text-3xl font-semibold text-center mb-8">Our Process</h2>
+
+      <div id="process-container" class="space-y-6"></div>
+    </section>
+
+    <!-- BEFORE / AFTER GALLERY -->
+    <section class="container mx-auto px-6 py-12">
+      <h2 class="text-3xl sm:text-5xl font-bold text-center mb-10">Before & After Gallery</h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-[2000px] mx-auto">
+        <!-- BEFORE -->
+        <div class="rounded-2xl p-6 bg-gradient-to-br from-white/6 to-white/4 backdrop-blur-md backdrop-blur-fallback border border-white/8 shadow-lg">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-semibold">Before</h3>
+            <button id="before-play-btn" class="flex items-center gap-3 px-4 py-2 rounded-full bg-purple-500/20 hover:bg-purple-500/30 transition-colors focus:outline-none" aria-pressed="true" aria-label="Toggle before autoplay">
+              <svg id="before-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span id="before-text" class="text-sm font-medium">Pause</span>
+            </button>
+          </div>
+
+          <div class="relative">
+            <div class="aspect-[5/3] bg-gray-800 rounded-2xl overflow-hidden shadow-inner">
+              <img id="before-image" src="" alt="Before example" class="w-full h-full object-cover transition-transform duration-500 hover-scale" decoding="async" />
+            </div>
+          </div>
+
+          <div id="before-dots" class="flex justify-center gap-4 mt-6" aria-hidden="false"></div>
+
+          <div id="before-thumbnails" class="grid grid-cols-3 gap-4 mt-6"></div>
+        </div>
+
+        <!-- AFTER -->
+        <div class="rounded-2xl p-6 bg-gradient-to-br from-white/6 to-white/4 backdrop-blur-md backdrop-blur-fallback border border-white/8 shadow-lg">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-semibold">After</h3>
+            <button id="after-play-btn" class="flex items-center gap-3 px-4 py-2 rounded-full bg-pink-500/20 hover:bg-pink-500/30 transition-colors focus:outline-none" aria-pressed="true" aria-label="Toggle after autoplay">
+              <svg id="after-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span id="after-text" class="text-sm font-medium">Pause</span>
+            </button>
+          </div>
+
+          <div class="relative">
+            <div class="aspect-[5/3] bg-gray-800 rounded-2xl overflow-hidden shadow-inner">
+              <img id="after-image" src="" alt="After example" class="w-full h-full object-cover transition-transform duration-500 hover-scale" decoding="async" />
+            </div>
+          </div>
+
+          <div id="after-dots" class="flex justify-center gap-4 mt-6"></div>
+
+          <div id="after-thumbnails" class="grid grid-cols-3 gap-4 mt-6"></div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex flex-wrap justify-center gap-6 mt-10">
+        <button id="sync-btn" class="px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold hover-scale focus:outline-none">Sync Both Sliders</button>
+        <button id="start-auto-btn" class="px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold hover-scale focus:outline-none">Start Auto-Play</button>
+        <button id="stop-auto-btn" class="px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold hover-scale focus:outline-none">Stop Auto-Play</button>
+      </div>
+    </section>
+  </div>
+<div class="border-t border-white/10 mt-8 sm:mt-10 lg:mt-12 pt-5 sm:pt-12 py-12 text-center text-xs sm:text-sm text-white/60">
+        © 2025 PROPICINFO. All rights reserved.
+      </div>
+  <!-- SCRIPT: Modular, commented -->
+  <script>
+    /* ==========
+      DATA: change asset paths here as needed
+    ========== */
+    const serviceData = {
+      benefits: [
+        
+     "Enhanced detail in both shadows and highlights for balanced exposure",
+      "Natural color reproduction without the artificial HDR look",
+      "Professional tone mapping that preserves image quality",
+      "Perfect for real estate, architecture, and landscape photography",
+      "Multiple exposure blending for optimal results",
+      "Custom processing tailored to your specific needs"
+      ],
+     process: [
+      {
+        step: "Image Analysis",
+        description: "We analyze your bracketed exposures or single RAW file to determine the best HDR approach for optimal results."
+      },
+      {
+        step: "Exposure Alignment",
+        description: "Multiple exposures are precisely aligned to eliminate ghosting and ensure perfect registration."
+      },
+      {
+        step: "HDR Generation",
+        description: "Advanced algorithms merge exposures to create a high dynamic range image with full detail retention."
+      },
+      {
+        step: "Tone Mapping",
+        description: "Professional tone mapping brings out details while maintaining natural colors and realistic appearance."
+      },
+      {
+        step: "Final Enhancement",
+        description: "Color correction, contrast optimization, and final polish to deliver stunning, print-ready results."
+      }
+    ],
+      beforeAfterImages: [
+        { before: "../assets/hdr bef.webp", after: "../assets/hdr aft.webp", title: "Real Estate Aerial Enhancement" },
+        { before: "../assets//QE2A1001.webp", after: "../assets//QE2A32261 (2).webp", title: "Landscape Aerial Processing" },
+        { before: "../assets/QE2A3086.webp", after: "../assets/QE2A30861.webp", title: "Commercial Aerial Enhancement" }
+      ]
+    };
+
+    /* ==========
+      STATE
+    ========== */
+    const state = {
+      beforeIndex: 0,
+      afterIndex: 0,
+      beforeAuto: true,
+      afterAuto: true,
+      beforeTimer: null,
+      afterTimer: null,
+      autoplayDelayBefore: 3000,
+      autoplayDelayAfter: 3500
+    };
+
+    /* ==========
+      SELECTORS
+    ========== */
+    const els = {
+      benefitsContainer: document.getElementById('benefits-container'),
+      processContainer: document.getElementById('process-container'),
+      beforeImage: document.getElementById('before-image'),
+      afterImage: document.getElementById('after-image'),
+      beforeDots: document.getElementById('before-dots'),
+      afterDots: document.getElementById('after-dots'),
+      beforeThumbs: document.getElementById('before-thumbnails'),
+      afterThumbs: document.getElementById('after-thumbnails'),
+      beforeBtn: document.getElementById('before-play-btn'),
+      afterBtn: document.getElementById('after-play-btn'),
+      beforeText: document.getElementById('before-text'),
+      afterText: document.getElementById('after-text'),
+      beforeIcon: document.getElementById('before-icon'),
+      afterIcon: document.getElementById('after-icon'),
+      syncBtn: document.getElementById('sync-btn'),
+      startAutoBtn: document.getElementById('start-auto-btn'),
+      stopAutoBtn: document.getElementById('stop-auto-btn')
+    };
+
+    /* ==========
+      RENDER HELPERS
+    ========== */
+    function renderBenefits() {
+      els.benefitsContainer.innerHTML = serviceData.benefits.map(b => `
+        <div class="bg-gradient-to-br from-white/6 to-white/4 rounded-xl p-5 border border-white/8 backdrop-blur-fallback">
+          <div class="flex items-start gap-3">
+            <svg class="w-6 h-6 text-green-400 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path>
+            </svg>
+            <p class="text-white/85">${escapeHTML(b)}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderProcess() {
+      els.processContainer.innerHTML = serviceData.process.map((p, i) => `
+        <div class="flex items-start gap-5 bg-gradient-to-br from-white/6 to-white/4 rounded-xl p-5 border border-white/8">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-semibold bg-gradient-to-br from-purple-500 to-pink-500 text-white">${i+1}</div>
+          <div>
+            <h4 class="font-semibold text-white">${escapeHTML(p.step)}</h4>
+            <p class="text-white/70">${escapeHTML(p.description)}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderGallery() {
+      updateBeforeImage();
+      updateAfterImage();
+      renderDots();
+      renderThumbnails();
+    }
+
+    function renderDots() {
+      const count = serviceData.beforeAfterImages.length;
+      els.beforeDots.innerHTML = Array.from({length: count}).map((_,i) => dotHTML(i,'before')).join('');
+      els.afterDots.innerHTML  = Array.from({length: count}).map((_,i) => dotHTML(i,'after')).join('');
+      updateDotStyles();
+      attachDotListeners();
+    }
+
+    function dotHTML(i, type) {
+      return `<button class="dot-size rounded-full dot transition-transform duration-200" data-index="${i}" data-type="${type}" aria-label="${type} slide ${i+1}"></button>`;
+    }
+
+    function renderThumbnails() {
+      els.beforeThumbs.innerHTML = serviceData.beforeAfterImages.map((img, i) => `
+        <button class="thumb before-thumb overflow-hidden rounded-xl border-2" data-index="${i}" data-type="before" aria-label="Before thumb ${i+1}">
+          <img src="${escapeAttr(img.before)}" alt="Before ${i+1}" class="w-full h-28 object-cover" decoding="async" />
+        </button>
+      `).join('');
+
+      els.afterThumbs.innerHTML = serviceData.beforeAfterImages.map((img, i) => `
+        <button class="thumb after-thumb overflow-hidden rounded-xl border-2" data-index="${i}" data-type="after" aria-label="After thumb ${i+1}">
+          <img src="${escapeAttr(img.after)}" alt="After ${i+1}" class="w-full h-28 object-cover" decoding="async" />
+        </button>
+      `).join('');
+
+      updateThumbnailStyles();
+      attachThumbListeners();
+    }
+
+    /* ==========
+      UPDATES
+    ========== */
+    function updateBeforeImage() {
+      const data = serviceData.beforeAfterImages[state.beforeIndex];
+      if (data) els.beforeImage.src = data.before;
+    }
+    function updateAfterImage() {
+      const data = serviceData.beforeAfterImages[state.afterIndex];
+      if (data) els.afterImage.src = data.after;
+    }
+
+    function updateDotStyles() {
+      const beforeDots = els.beforeDots.querySelectorAll('.dot');
+      const afterDots  = els.afterDots.querySelectorAll('.dot');
+      beforeDots.forEach((d,i) => {
+        d.classList.toggle('bg-purple-500', i === state.beforeIndex);
+        d.classList.toggle('bg-white/30', i !== state.beforeIndex);
+        d.style.transform = i === state.beforeIndex ? 'scale(1.15)' : 'scale(1)';
+      });
+      afterDots.forEach((d,i) => {
+        d.classList.toggle('bg-pink-500', i === state.afterIndex);
+        d.classList.toggle('bg-white/30', i !== state.afterIndex);
+        d.style.transform = i === state.afterIndex ? 'scale(1.15)' : 'scale(1)';
+      });
+    }
+
+    function updateThumbnailStyles() {
+      const beforeThumbs = els.beforeThumbs.querySelectorAll('.thumb');
+      const afterThumbs = els.afterThumbs.querySelectorAll('.thumb');
+      beforeThumbs.forEach((t,i) => {
+        t.classList.toggle('border-purple-500', i === state.beforeIndex);
+        t.classList.toggle('border-white/20', i !== state.beforeIndex);
+        if (i === state.beforeIndex) t.classList.add('shadow-lg'); else t.classList.remove('shadow-lg');
+      });
+      afterThumbs.forEach((t,i) => {
+        t.classList.toggle('border-pink-500', i === state.afterIndex);
+        t.classList.toggle('border-white/20', i !== state.afterIndex);
+        if (i === state.afterIndex) t.classList.add('shadow-lg'); else t.classList.remove('shadow-lg');
+      });
+    }
+
+    /* ==========
+      AUTOPLAY CONTROL
+    ========== */
+    function startAutoplay() {
+      stopAutoplay(); // ensure no duplicate timers
+      if (state.beforeAuto) {
+        state.beforeTimer = setInterval(() => {
+          state.beforeIndex = (state.beforeIndex + 1) % serviceData.beforeAfterImages.length;
+          updateBeforeImage(); updateDotStyles(); updateThumbnailStyles();
+        }, state.autoplayDelayBefore);
+      }
+      if (state.afterAuto) {
+        state.afterTimer = setInterval(() => {
+          state.afterIndex = (state.afterIndex + 1) % serviceData.beforeAfterImages.length;
+          updateAfterImage(); updateDotStyles(); updateThumbnailStyles();
+        }, state.autoplayDelayAfter);
+      }
+      updatePlayButtons();
+    }
+
+    function stopAutoplay() {
+      if (state.beforeTimer) { clearInterval(state.beforeTimer); state.beforeTimer = null; }
+      if (state.afterTimer)  { clearInterval(state.afterTimer);  state.afterTimer = null; }
+      updatePlayButtons();
+    }
+
+    function stopBeforeAutoplayOnly(){
+      if (state.beforeTimer) { clearInterval(state.beforeTimer); state.beforeTimer = null; }
+    }
+    function stopAfterAutoplayOnly(){
+      if (state.afterTimer) { clearInterval(state.afterTimer); state.afterTimer = null; }
+    }
+
+    /* ==========
+      UI BUTTONS
+    ========== */
+    function updatePlayButtons() {
+      // before
+      els.beforeText.textContent = state.beforeAuto ? 'Pause' : 'Play';
+      // after
+      els.afterText.textContent = state.afterAuto ? 'Pause' : 'Play';
+      // aria-pressed
+      els.beforeBtn.setAttribute('aria-pressed', String(state.beforeAuto));
+      els.afterBtn.setAttribute('aria-pressed', String(state.afterAuto));
+    }
+
+    /* ==========
+      EVENT ATTACHMENTS
+    ========== */
+    function attachDotListeners() {
+      els.beforeDots.querySelectorAll('.dot').forEach(dot => {
+        dot.onclick = () => {
+          const idx = Number(dot.dataset.index);
+          state.beforeIndex = idx;
+          state.beforeAuto = false;
+          stopBeforeAutoplayOnly();
+          updateBeforeImage(); updateDotStyles(); updateThumbnailStyles(); updatePlayButtons();
+        };
+      });
+      els.afterDots.querySelectorAll('.dot').forEach(dot => {
+        dot.onclick = () => {
+          const idx = Number(dot.dataset.index);
+          state.afterIndex = idx;
+          state.afterAuto = false;
+          stopAfterAutoplayOnly();
+          updateAfterImage(); updateDotStyles(); updateThumbnailStyles(); updatePlayButtons();
+        };
+      });
+    }
+
+    function attachThumbListeners() {
+      els.beforeThumbs.querySelectorAll('.thumb').forEach(thumb => {
+        thumb.onclick = () => {
+          const idx = Number(thumb.dataset.index);
+          state.beforeIndex = idx;
+          state.beforeAuto = false;
+          stopBeforeAutoplayOnly();
+          updateBeforeImage(); updateDotStyles(); updateThumbnailStyles(); updatePlayButtons();
+        };
+      });
+      els.afterThumbs.querySelectorAll('.thumb').forEach(thumb => {
+        thumb.onclick = () => {
+          const idx = Number(thumb.dataset.index);
+          state.afterIndex = idx;
+          state.afterAuto = false;
+          stopAfterAutoplayOnly();
+          updateAfterImage(); updateDotStyles(); updateThumbnailStyles(); updatePlayButtons();
+        };
+      });
+    }
+
+    /* ==========
+      BIND GLOBAL CONTROLS
+    ========== */
+    (function bindControls(){
+      els.beforeBtn.addEventListener('click', () => {
+        state.beforeAuto = !state.beforeAuto;
+        if (state.beforeAuto) startAutoplay(); else stopBeforeAutoplayOnly();
+        updatePlayButtons();
+      });
+      els.afterBtn.addEventListener('click', () => {
+        state.afterAuto = !state.afterAuto;
+        if (state.afterAuto) startAutoplay(); else stopAfterAutoplayOnly();
+        updatePlayButtons();
+      });
+
+      els.syncBtn.addEventListener('click', () => {
+        state.beforeIndex = 0; state.afterIndex = 0;
+        updateBeforeImage(); updateAfterImage(); updateDotStyles(); updateThumbnailStyles();
+      });
+
+      els.startAutoBtn.addEventListener('click', () => {
+        state.beforeAuto = true; state.afterAuto = true;
+        startAutoplay();
+      });
+
+      els.stopAutoBtn.addEventListener('click', () => {
+        state.beforeAuto = false; state.afterAuto = false;
+        stopAutoplay();
+      });
+    })();
+
+    /* ==========
+      UTIL: simple escaping for inserted HTML strings
+    ========== */
+    function escapeHTML(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+    function escapeAttr(s){ return String(s).replaceAll('"','&quot;'); }
+
+    /* ==========
+      INITIALIZE
+    ========== */
+    (function init(){
+      renderBenefits();
+      renderProcess();
+      renderGallery();
+      // initial autoplay start
+      startAutoplay();
+    })();
+  </script>
+</body>
+</html>
