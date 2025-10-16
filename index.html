@@ -1489,39 +1489,44 @@
                 }
             }
 
-            if (supportsHover) {
-                servicesDropdown.addEventListener('mouseenter', function () {
-                    if (servicesHideTimer) {
-                        clearTimeout(servicesHideTimer);
-                        servicesHideTimer = null;
+            let isDropdownOpen = false;
+
+            // Combines hover and click for better usability on hybrid devices
+            if (servicesDropdownBtn) {
+                // Click to toggle
+                servicesDropdownBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    isDropdownOpen = !isDropdownOpen;
+                    if (isDropdownOpen) {
+                        showDropdownPortal();
+                    } else {
+                        hideDropdownPortal();
                     }
-                    showDropdownPortal();
                 });
 
-                servicesDropdown.addEventListener('mouseleave', function () {
-                    servicesHideTimer = setTimeout(() => {
-                        hideDropdownPortal();
-                        servicesHideTimer = null;
-                    }, 220);
-                });
-            } else {
-                if (servicesDropdownBtn) {
-                    servicesDropdownBtn.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        if (dropdownContent.classList.contains('hidden')) {
+                // Hover to open
+                if (supportsHover) {
+                    servicesDropdown.addEventListener('mouseenter', function () {
+                        if (servicesHideTimer) clearTimeout(servicesHideTimer);
+                        if (!isDropdownOpen) {
                             showDropdownPortal();
-                        } else {
-                            hideDropdownPortal();
                         }
                     });
 
-                    // Close when clicking outside
-                    document.addEventListener('click', function (ev) {
-                        if (!servicesDropdown.contains(ev.target) && !dropdownContent.contains(ev.target)) {
-                            hideDropdownPortal();
+                    servicesDropdown.addEventListener('mouseleave', function () {
+                        if (!isDropdownOpen) {
+                            servicesHideTimer = setTimeout(hideDropdownPortal, 220);
                         }
                     });
                 }
+
+                // Close when clicking outside
+                document.addEventListener('click', function (ev) {
+                    if (!servicesDropdown.contains(ev.target) && !dropdownContent.contains(ev.target)) {
+                        isDropdownOpen = false;
+                        hideDropdownPortal();
+                    }
+                });
             }
         }
 
