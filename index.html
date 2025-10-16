@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propic Studio - Professional Photo Editing</title>
+    <meta name="description" content="Propic Studio offers professional photo editing services with a human touch. We transform your photos into extraordinary masterpieces. No AI, just expert craftsmanship.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Base Tailwind Media Queries */
+        @media (min-width: 768px) {
+            .md\:flex {
+                display: flex;
+            }
+
+            .md\:hidden {
+                display: none;
+            }
+        }
+
+        /* Hero Section Styling */
+        .hero {
+            min-height: 100vh;
+        }
+
+        /* Cap hero height for very large screens to avoid oversized background appearance */
+        @media (min-width: 1600px) {
+            .hero {
+                min-height: 72vh; /* reduce hero height on very wide displays */
+            }
+            .bg-slideshow {
+                background-position: center top; /* favor top-center crop on large screens */
+            }
+        }
+
+        /* Background Slideshow CSS */
+        .bg-slideshow {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 1s ease-in-out, transform 6s ease-in-out;
+            /* Zoom effect on image load */
+        }
+
+        .bg-slideshow.active {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .bg-slideshow.inactive {
+            opacity: 0;
+            transform: scale(1);
+        }
+
+        /* prevent background slides from intercepting pointer events */
+        .bg-slideshow {
+            pointer-events: none;
+        }
+
+        /* Text Gradient/Animation */
+        .bg-clip-text {
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .bg-gradient-text {
+            background: linear-gradient(to right, #eab308, #e9d5ff, #7f1d1d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .5;
+            }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+
+        /* Mobile header overlap fix (Ensure adequate padding on mobile) */
+        .max-h-0 {
+            max-height: 0;
+        }
+
+        .max-h-screen {
+            max-height: 100vh; /* Or a suitable large value */
+        }
+
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        /* Mobile services dropdown animation */
+        #mobile-services-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 300ms ease, opacity 200ms ease;
+            opacity: 0;
+        }
+
+        #mobile-services-dropdown.open {
+            opacity: 1;
+        }
+    </style>
+</head> 
+
+<body>
+
+    <header id="header" class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md transition-all duration-500">
+        <nav class="container mx-auto px-3 py-2">
+            <div class="flex items-center justify-between">
+
+             <div class="flex items-center justify-start space-x-4 cursor-pointer group">
+  <!-- Logo Image -->
+  <!-- <img src="./assets/propic-removebg-preview-removebg-preview.png" alt="Propic Logo" 
+     width="64" height="60"
+     class="object-contain transform transition-transform duration-300 hover:scale-110"> -->
+     <picture>
+  <source srcset="./assets/propic-removebg-preview-removebg-preview.png" media="(max-width: 768px)">
+  <img src="./assets/propic-removebg-preview-removebg-preview.png" alt="Propic Logo" width="64" height="60" class="object-contain transform transition-transform duration-300 hover:scale-110">
+</picture>
+
+  <!-- Brand Text -->
+  <span
+    class="text-3xl font-extrabold tracking-wide bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-lg group-hover:scale-105 transition-transform duration-300"
+    style="-webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+    PROPICINFO
+  </span>
+</div>
+
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home"
+                        class="nav-link text-white/80 hover:text-white transition-all duration-300 hover:scale-105 relative group">
+                        Home
+                        <span
+                            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+
+                    <a href="#about"
+                        class="nav-link text-white/80 hover:text-white transition-all duration-300 hover:scale-105 relative group">
+                        About
+                        <span
+                            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+
+                    <a href="#process"
+                        class="nav-link text-white/80 hover:text-white transition-all duration-300 hover:scale-105 relative group">
+                        Process
+                        <span
+                            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+
+                    <a href="#contact"
+                        class="nav-link text-white/80 hover:text-white transition-all duration-300 hover:scale-105 relative group">
+                        Contact
+                        <span
+                            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+
+                    <div class="relative services-dropdown">
+                        <button
+                            class="text-white/80 hover:text-white transition-all duration-300 hover:scale-105 relative group flex items-center space-x-1">
+                            <span>Services</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <span
+                                class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 transition-all duration-300 group-hover:w-full"></span>
+                        </button>
+
+                        <div
+                            class="dropdown-content hidden absolute top-full left-0 mt-2 w-64 bg-black/95 backdrop-blur-md border border-white/20 rounded-lg shadow-2xl">
+                            <div class="py-2">
+                                <a href="pages/ArialPhotosService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Arial
+                                    Photos Service</a>
+                                <a href="pages/DayToDuskService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Day
+                                    To Dusk Service</a>
+                                <a href="pages/FlashAmbientService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Flash
+                                    Ambient Service</a>
+                                <a href="pages/HDRService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">HDR
+                                    Service</a>
+                                <a href="pages/LandEnhancementService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Land
+                                    Enhancement Service</a>
+                                <a href="pages/NaturalEditService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Natural
+                                    Edit Service</a>
+                                <a href="pages/OutdoorService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Outdoor
+                                    Service</a>
+                                <a href="pages/PatchRemovalsService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Patch
+                                    Removals Service</a>
+                                <a href="pages/PhotosFromVideosService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Photos
+                                    From Videos Service</a>
+                                <a href="pages/PortraitService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Portrait
+                                    Service</a>
+                                <a href="pages/RealTwilightService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Real
+                                    Twilight Service</a>
+                                <a href="pages/Service360.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Service
+                                    360</a>
+                                <a href="pages/SingleImagesService.html"
+                                    class="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">Single
+                                    Images Service</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+                <button id="mobile-menu-btn" class="md:hidden text-white hover:text-purple-400 transition-colors">
+                    <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div id="mobile-menu"
+                class="md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-md border-b border-white/10 overflow-auto max-h-0 transition-all duration-500 ease-in-out z-50">
+                <div class="container mx-auto px-6 py-6 space-y-4">
+                    <a href="#home"
+                        class="block text-white/80 hover:text-white transition-colors w-full text-left py-2">Home</a>
+                    <a href="#about"
+                        class="block text-white/80 hover:text-white transition-colors w-full text-left py-2">About</a>
+                    <a href="#process"
+                        class="block text-white/80 hover:text-white transition-colors w-full text-left py-2">Process</a>
+                    <a href="#contact"
+                        class="block text-white/80 hover:text-white transition-colors w-full text-left py-2">Contact</a>
+
+                    <div class="border-t border-white/20 pt-4 ">
+                        <button id="mobile-services-btn"
+                            class="flex items-center justify-between w-full text-white/80 hover:text-white transition-colors py-2">
+                            <span>Services</span>
+                            <svg id="mobile-services-arrow" class="w-4 h-4 transform transition-transform duration-300"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                                </path>
+                            </svg>
+                        </button>
+                        <div id="mobile-services-dropdown" class="hidden space-y-2 pl-4 mt-2">
+                            <a href="pages/ArialPhotosService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Arial
+                                Photos Service</a>
+                            <a href="pages/DayToDuskService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Day
+                                To Dusk Service</a>
+                            <a href="pages/FlashAmbientService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Flash
+                                Ambient Service</a>
+                            <a href="pages/HDRService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">HDR
+                                Service</a>
+                            <a href="pages/LandEnhancementService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Land
+                                Enhancement Service</a>
+                            <a href="pages/NaturalEditService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Natural
+                                Edit Service</a>
+                            <a href="pages/OutdoorService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Outdoor
+                                Service</a>
+                            <a href="pages/PatchRemovalsService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Patch
+                                Removals Service</a>
+                            <a href="pages/PhotosFromVideosService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Photos
+                                From Videos Service</a>
+                            <a href="pages/PortraitService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Portrait
+                                Service</a>
+                            <a href="pages/RealTwilightService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Real
+                                Twilight Service</a>
+                            <a href="pages/Service360.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Service
+                                360</a>
+                            <a href="pages/SingleImagesService.html"
+                                class="block text-white/80 hover:text-white transition-colors w-full text-left py-1">Single
+                                Images Service</a>
+                        </div>
+                    </div>
+
+                    <!-- <button
+                        class="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 rounded-full text-white font-medium w-full">
+                        Get Started
+                    </button> -->
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <!-- <section id="home"
+            class="relative min-h-screen flex md:items-center md:justify-center overflow-hidden text-white hero pt-32"> -->
+        <section id="home"
+            class="relative min-h-screen flex items-center justify-center overflow-hidden text-white hero pt-20 md:pt-28">
+            <div class="absolute inset-0 z-0" id="bg-container">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/70 z-[1]"></div>
+
+            <div class="container relative z-10 px-6 text-center">
+                <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-6 leading-tight">
+                    <span class="bg-gradient-text animate-pulse" id="rotating-word">Transform</span>
+                    <span class="block text-white">Your Visual Story</span>
+                </h1>
+                <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-white max-w-3xl mx-auto mb-30">
+                    Professional photo editing services without AI and only human touch.
+                    <span class="text-white font-semibold">
+                        Transform ordinary photos into extraordinary masterpieces.
+                    </span>
+                </p>
+            </div>
+
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center">
+                <div
+                    class="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center relative overflow-hidden">
+                    <div class="w-1 h-3 bg-gradient-to-b from-purple-400 to-pink-400 rounded-full mt-1 animate-bounce">
+                    </div>
+                </div>
+                <div class="text-white/60 text-xs mt-2">Scroll to explore</div>
+                <svg class="w-4 h-4 text-white/40 mt-1 animate-pulse" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122">
+                    </path>
+                </svg>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 bg-gradient-to-br from-black/40 to-purple-900/20 relative">
+            <div class="container mx-auto px-6">
+
+                <!-- Main About Section -->
+                <div class="grid lg:grid-cols-2 gap-16 items-center mb-20">
+                    <div>
+                        <h2
+                            class="text-5xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                            About PROPICINFO
+                        </h2>
+                        <div class="space-y-6 text-white/80 text-lg">
+                            <p>
+                                Established in 2024, <strong>Propicinfo</strong> has rapidly become a global leader in
+                                professional photo editing—enhancing over 10,000 images for clients across more than 10
+                                countries. What began with a simple mission has grown into a world-class creative force:
+                                to make high-end photo editing accessible to everyone.
+                            </p>
+                            <p>
+                                From a small group of passionate editors, we've evolved into a full-scale digital
+                                studio—fusing No AI technologies with skilled craftsmanship to deliver stunning results
+                                that consistently surpass expectations.
+                            </p>
+                            <p>
+                                Today, Propicinfo proudly partners with Fortune 30 companies, real estate firms,
+                                e-commerce giants, and independent photographers alike—upholding our unwavering promise
+                                of quality, speed, and customer satisfaction.
+                            </p>
+                        </div>
+
+                        <!-- Achievements Grid -->
+                        <div class="grid grid-cols-2 gap-6 mt-12">
+                            <div
+                                class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-500/30 hover:scale-105 transition-transform duration-300">
+                                <div class="text-3xl font-bold text-white mb-2">6+</div>
+                                <div class="text-purple-300">Years Experience</div>
+                            </div>
+                            <div
+                                class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-500/30 hover:scale-105 transition-transform duration-300">
+                                <div class="text-3xl font-bold text-white mb-2">10+</div>
+                                <div class="text-purple-300">Countries Served</div>
+                            </div>
+                            <div
+                                class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-500/30 hover:scale-105 transition-transform duration-300">
+                                <div class="text-3xl font-bold text-white mb-2">5+</div>
+                                <div class="text-purple-300">Team Members</div>
+                            </div>
+                            <div
+                                class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-6 border border-purple-500/30 hover:scale-105 transition-transform duration-300">
+                                <div class="text-3xl font-bold text-white mb-2">24/7</div>
+                                <div class="text-purple-300">Support Available</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mission & Vision -->
+                    <div class="relative">
+                        <div
+                            class="bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-2xl p-8 backdrop-blur-sm border border-white/10">
+                            <h3 class="text-2xl font-bold text-white mb-6">Our Mission</h3>
+                            <p class="text-white/80 mb-8">
+                                To democratize professional photo editing by combining advanced technology with human
+                                creativity,
+                                making high-quality visual content accessible to businesses and individuals worldwide.
+                            </p>
+
+                            <h3 class="text-2xl font-bold text-white mb-6">Our Vision</h3>
+                            <p class="text-white/80 mb-8">
+                                To become the world's most trusted creative partner, empowering brands and individuals
+                                to tell
+                                their visual stories with unprecedented quality and efficiency.
+                            </p>
+                        </div>
+
+                        <!-- Floating elements -->
+                        <div
+                            class="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full opacity-20 animate-pulse">
+                        </div>
+                        <div
+                            class="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full opacity-30 animate-bounce">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Core Values Section -->
+                <div class="text-center mb-16">
+                    <h2
+                        class="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                        Our Core Values
+                    </h2>
+                    <p class="text-xl text-white/70 max-w-3xl mx-auto">
+                        The principles that guide everything we do at Propic Studio
+                    </p>
+                </div>
+
+                <!-- Values Cards -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Quality First -->
+                    <div
+                        class="group bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-purple-500/50 transition-all duration-500 hover:scale-105">
+                        <div
+                            class="inline-flex p-4 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Quality First</h3>
+                        <p class="text-white/70">We never compromise on quality. Every image undergoes rigorous quality
+                            checks before delivery.</p>
+                    </div>
+
+                    <!-- Speed & Efficiency -->
+                    <div
+                        class="group bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-purple-500/50 transition-all duration-500 hover:scale-105">
+                        <div
+                            class="inline-flex p-4 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Speed & Efficiency</h3>
+                        <p class="text-white/70">Fast turnaround times without sacrificing quality. Most projects
+                            completed within 24 hours.</p>
+                    </div>
+
+                    <!-- Customer-Centric -->
+                    <div
+                        class="group bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-purple-500/50 transition-all duration-500 hover:scale-105">
+                        <div
+                            class="inline-flex p-4 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Customer-Centric</h3>
+                        <p class="text-white/70">Your success is our success. We go above and beyond to exceed your
+                            expectations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+       <section
+  id="services"
+  class="bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 py-20 text-center"
+>
+  <div class="container mx-auto px-6 flex flex-col items-center justify-center">
+    <!-- Header Section -->
+    <div class="max-w-4xl mb-16">
+      <div
+        class="inline-flex items-center gap-2 bg-purple-500/10 rounded-full border border-purple-500/20 mb-6 px-4 py-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="10"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="text-purple-400"
+        >
+          <path
+            d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"
+          ></path>
+          <path d="M5 3v4"></path>
+          <path d="M19 17v4"></path>
+          <path d="M3 5h4"></path>
+          <path d="M17 19h4"></path>
+        </svg>
+        <span class="text-purple-300 text-sm font-medium">Our Services</span>
+      </div>
+
+      <h2
+        class="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent leading-tight"
+      >
+        Photo Enhancement
+      </h2>
+
+      <p class="text-xl text-slate-300 leading-relaxed">
+        Transform your images with our professional editing services. From real
+        estate to portraits, we bring your vision to life with stunning results.
+      </p>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="w-full max-w-5xl flex flex-col items-center mb-16">
+      <div class="flex items-center gap-2 mb-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="text-purple-400"
+        >
+          <polygon
+            points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
+          ></polygon>
+        </svg>
+        <span class="text-slate-300 text-sm font-medium"
+          >Filter by category:</span
+        >
+      </div>
+
+      <div
+        class="flex flex-wrap justify-center gap-3 w-full"
+        id="categoryFilter"
+      >
+        <button
+          class="category-btn active px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="all"
+        >
+          All
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="REAL ESTATE"
+        >
+          Real Estate
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="PORTRAIT"
+        >
+          Portrait
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="HDR"
+        >
+          HDR
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="AERIAL PHOTOS"
+        >
+          Aerial Photos
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="DAY TO DUSK"
+        >
+          Day to Dusk
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="360 PHOTOS"
+        >
+          360 Photos
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="TWILIGHT"
+        >
+          Twilight
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="SINGLE IMAGES"
+        >
+          Single Images
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="FLASH AMBIENT"
+        >
+          Flash Ambient
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="LAND ENHANCEMENT"
+        >
+          Land Enhancement
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="NATURAL EDIT"
+        >
+          Natural Edit
+        </button>
+        <button
+          class="category-btn px-6 py-3 rounded-xl font-medium transition-all duration-300 text-sm uppercase tracking-wider"
+          data-category="OUTDOOR"
+        >
+          Outdoor
+        </button>
+      </div>
+    </div>
+
+        <!-- Services Grid -->
+        <div
+            id="portfolioGrid"
+            class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center w-full max-w-6xl"
+        >
+            <!-- Portfolio items will be inserted here by JavaScript -->
+        </div>
+
+        <!-- Load More Button -->
+        <div class="w-full mt-8 flex justify-center">
+            <button id="loadMoreBtn" class="px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium shadow-lg hidden">Load More</button>
+        </div>
+    </div>
+</section>
+
+
+        <!-- Process Section -->
+        <section id="process" class="py-20 relative">
+            <div class="container mx-auto px-6">
+                <!-- Header -->
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl font-bold mb-6 gradient-text">
+                        Our Email-Powered Workflow
+                    </h2>
+                    <p class="text-xl text-white/70 max-w-3xl mx-auto">
+                        Experience seamless image editing from your inbox to ours, ensuring professional results with
+                        maximum efficiency and transparency.
+                    </p>
+                </div>
+
+                <!-- Process Steps -->
+                <div class="grid md:grid-cols-4 gap-8 mb-20">
+                    <!-- Step 1: Send Your Images -->
+                    <div class="group text-center relative">
+                        <div
+                            class="hidden md:block absolute top-10 left-[calc(50%+40px)] w-[calc(100%-80px)] h-0.5 connection-line">
+                        </div>
+
+                        <div class="relative mb-6">
+                            <div
+                                class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-2xl hover-float">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2"></rect>
+                                    <path d="M22 7L13.03 12.7a1.94 1.94 0 01-2.06 0L2 7" stroke-width="2"></path>
+                                </svg>
+                            </div>
+                            <div
+                                class="absolute -top-2 -right-2 w-8 h-8 bg-white text-purple-600 rounded-full flex items-center justify-center font-bold text-sm shadow-lg">
+                                1
+                            </div>
+                        </div>
+
+                        <h3 class="text-2xl font-bold text-white mb-4">Send Your Images</h3>
+                        <p class="text-white/70 mb-6">Simply email us your images. Our system securely receives your
+                            request.</p>
+
+                        <ul class="space-y-2">
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                Secure email processing
+                            </li>
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                Supports all major formats
+                            </li>
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                Clear instructions provided
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 2: Expert Editing -->
+                    <div class="group text-center relative">
+                        <div
+                            class="hidden md:block absolute top-10 left-[calc(50%+40px)] w-[calc(100%-80px)] h-0.5 connection-line">
+                        </div>
+
+                        <div class="relative mb-6">
+                            <div
+                                class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-2xl hover-float">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                            <div
+                                class="absolute -top-2 -right-2 w-8 h-8 bg-white text-purple-600 rounded-full flex items-center justify-center font-bold text-sm shadow-lg">
+                                2
+                            </div>
+                        </div>
+
+                        <h3 class="text-2xl font-bold text-white mb-4">Expert Editing</h3>
+                        <p class="text-white/70 mb-6">Our skilled team enhances your images with precision, creativity,
+                            and attention to detail.</p>
+
+                        <ul class="space-y-2">
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                No AI-assisted editing
+                            </li>
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                Human quality control
+                            </li>
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                Custom specifications applied
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 3: Quality Review -->
+                    <div class="group text-center relative">
+                        <div
+                            class="hidden md:block absolute top-10 left-[calc(50%+40px)] w-[calc(100%-80px)] h-0.5 connection-line">
+                        </div>
+
+                        <div class="relative mb-6">
+                            <div
+                                class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-2xl hover-float">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <circle cx="12" cy="12" r="3" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></circle>
+                                </svg>
+                            </div>
+                            <div
+                                class="absolute -top-2 -right-2 w-8 h-8 bg-white text-purple-600 rounded-full flex items-center justify-center font-bold text-sm shadow-lg">
+                                3
+                            </div>
+                        </div>
+
+                        <h3 class="text-2xl font-bold text-white mb-4">Quality Review</h3>
+                        <p class="text-white/70 mb-6">Our quality assurance team meticulously reviews each image to
+                            ensure perfection.</p>
+
+                        <ul class="space-y-2">
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                Multi-stage review
+                            </li>
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                Client feedback integration
+                            </li>
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                Unlimited revisions included
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 4: Receive by Email -->
+                    <div class="group text-center relative">
+                        <div class="relative mb-6">
+                            <div
+                                class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300 shadow-2xl hover-float">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <line x1="22" y1="2" x2="11" y2="13" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polygon>
+                                </svg>
+                            </div>
+                            <div
+                                class="absolute -top-2 -right-2 w-8 h-8 bg-white text-purple-600 rounded-full flex items-center justify-center font-bold text-sm shadow-lg">
+                                4
+                            </div>
+                        </div>
+
+                        <h3 class="text-2xl font-bold text-white mb-4">Receive by Email</h3>
+                        <p class="text-white/70 mb-6">We'll send your professionally edited images directly to your
+                            inbox.</p>
+
+                        <ul class="space-y-2">
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                Multiple format options
+                            </li>
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                High-resolution delivery
+                            </li>
+                            <li class="text-white/60 text-sm flex items-center justify-center">
+                                <svg class="w-4 h-4 text-green-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                Quick email delivery
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Stats Section -->
+                <div
+                    class="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-2xl p-8 border border-purple-500/30">
+                    <h3 class="text-3xl font-bold text-white text-center mb-8">Our Track Record</h3>
+                    <div class="grid md:grid-cols-4 gap-8">
+                        <!-- Stat 1 -->
+                        <div class="text-center group">
+                            <div
+                                class="text-purple-400 mb-4 flex justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+                                    <polyline points="12 6 12 12 16 14" stroke-width="2" stroke-linecap="round">
+                                    </polyline>
+                                </svg>
+                            </div>
+                            <div class="text-4xl font-bold text-white mb-2">12hrs</div>
+                            <div class="text-white/70">Average Turnaround</div>
+                        </div>
+
+                        <!-- Stat 2 -->
+                        <div class="text-center group">
+                            <div
+                                class="text-purple-400 mb-4 flex justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                            </div>
+                            <div class="text-4xl font-bold text-white mb-2">99.8%</div>
+                            <div class="text-white/70">Client Satisfaction</div>
+                        </div>
+
+                        <!-- Stat 3 -->
+                        <div class="text-center group">
+                            <div
+                                class="text-purple-400 mb-4 flex justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <rect x="2" y="4" width="20" height="16" rx="2" stroke-width="2"></rect>
+                                    <path d="M22 7L13.03 12.7a1.94 1.94 0 01-2.06 0L2 7" stroke-width="2"></path>
+                                </svg>
+                            </div>
+                            <div class="text-4xl font-bold text-white mb-2">5K+</div>
+                            <div class="text-white/70">Emails Processed</div>
+                        </div>
+
+                        <!-- Stat 4 -->
+                        <div class="text-center group">
+                            <div
+                                class="text-purple-400 mb-4 flex justify-center group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <circle cx="12" cy="12" r="3" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></circle>
+                                </svg>
+                            </div>
+                            <div class="text-4xl font-bold text-white mb-2">50+</div>
+                            <div class="text-white/70">Happy Clients</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Process Guarantee -->
+                <div class="mt-16 text-center">
+                    <div
+                        class="bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-2xl p-8 border border-green-500/30 max-w-4xl mx-auto">
+                        <h3 class="text-2xl font-bold text-white mb-4">Your Satisfaction, Guaranteed</h3>
+                        <p class="text-white/80 mb-6">
+                            We're so confident in our email-based process that we offer unlimited revisions until you're
+                            100% satisfied.
+                            Your success is our priority, and we'll work tirelessly to exceed your expectations.
+                        </p>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="flex items-center justify-center space-x-2">
+                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                <span class="text-white font-semibold">Unlimited Revisions</span>
+                            </div>
+                            <div class="flex items-center justify-center space-x-2">
+                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                <span class="text-white font-semibold">Money-Back Guarantee</span>
+                            </div>
+                            <div class="flex items-center justify-center space-x-2">
+                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"></polyline>
+                                </svg>
+                                <span class="text-white font-semibold">24/7 Email Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="contact" class="py-20 bg-gradient-to-r from-purple-600 to-pink-600 relative overflow-hidden">
+            <!-- Background Effects -->
+            <div class="absolute inset-0">
+                <div class="absolute inset-0 bg-gradient-to-r from-purple-600/90 to-pink-600/90"></div>
+                <div id="particles"></div>
+            </div>
+
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-5xl md:text-6xl font-bold text-white mb-6">
+                        Ready to Transform Your Images?
+                    </h2>
+                    <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                        Join thousands of satisfied clients and experience the difference professional photo editing can
+                        make.
+                        Start your free trial today!
+                    </p>
+
+                    <!-- Benefits -->
+                    <div class="grid md:grid-cols-4 gap-6 mb-12">
+                        <div
+                            class="flex items-center justify-center space-x-2 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <svg class="w-5 h-5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-white font-medium">Free 3 image trial</span>
+                        </div>
+                        <div
+                            class="flex items-center justify-center space-x-2 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <svg class="w-5 h-5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-white font-medium">24/7 customer support</span>
+                        </div>
+                        <div
+                            class="flex items-center justify-center space-x-2 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <svg class="w-5 h-5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-white font-medium">No Money-back guarantee</span>
+                        </div>
+                        <div
+                            class="flex items-center justify-center space-x-2 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <svg class="w-5 h-5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span class="text-white font-medium">Unlimited Revisions</span>
+                        </div>
+                    </div>
+
+                    <!-- Social Media Contact -->
+                    <div class="max-w-2xl mx-auto text-center">
+                        <h3 class="text-2xl font-semibold text-white mb-4">Connect With Us</h3>
+                        <p class="text-white/70 mb-8">Reach out through your preferred platform</p>
+
+                        <!-- Social Media Icons -->
+                        <div class="flex flex-wrap justify-center gap-6">
+                            <!-- WhatsApp -->
+                            <a href="https://wa.me/916383836187" target="_blank" rel="noopener noreferrer"
+                                class="group bg-white/10 backdrop-blur-sm p-4 rounded-full border border-white/20 hover:border-green-400/50 hover:bg-green-500/20 transition-all duration-300 hover:scale-110">
+                                <svg class="w-8 h-8 text-white group-hover:text-green-300 transition-colors"
+                                    fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488" />
+                                </svg>
+                            </a>
+
+                            <!-- Email -->
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=gokuljabde17@gmail.com&su=Photo%20Editing%20Inquiry&body=Hi%20Propic%20Studio,%0A%0AI%20am%20interested%20in%20your%20photo%20editing%20services.%0A%0APlease%20contact%20me%20back.%0A%0AThank%20you!" target="_blank" rel="noopener noreferrer"
+                                class="group bg-white/10 backdrop-blur-sm p-4 rounded-full border border-white/20 hover:border-blue-400/50 hover:bg-blue-500/20 transition-all duration-300 hover:scale-110">
+                                <svg class="w-8 h-8 text-white group-hover:text-blue-300 transition-colors" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </a>
+
+                            <!-- LinkedIn -->
+                            <a href="https://linkedin.com/in/[your-profile]" target="_blank" rel="noopener noreferrer"
+                                class="group bg-white/10 backdrop-blur-sm p-4 rounded-full border border-white/20 hover:border-blue-600/50 hover:bg-blue-600/20 transition-all duration-300 hover:scale-110">
+                                <svg class="w-8 h-8 text-white group-hover:text-blue-300 transition-colors"
+                                    fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                </svg>
+                            </a>
+
+                            <!-- Instagram -->
+                            <a href="https://www.instagram.com/propicinfo2024?igsh=MWNsNDU1c29xeHNkbA==" target="_blank" rel="noopener noreferrer"
+                                class="group bg-white/10 backdrop-blur-sm p-4 rounded-full border border-white/20 hover:border-pink-400/50 hover:bg-pink-500/20 transition-all duration-300 hover:scale-110">
+                                <svg class="w-8 h-8 text-white group-hover:text-pink-300 transition-colors"
+                                    fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987 6.62 0 11.987-5.367 11.987-11.987C24.014 5.367 18.637.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.49-3.323-1.297C4.198 14.895 3.708 13.744 3.708 12.447s.49-2.448 1.418-3.323c.875-.875 2.026-1.297 3.323-1.297s2.448.422 3.323 1.297c.928.875 1.418 2.026 1.418 3.323s-.49 2.448-1.418 3.244c-.875.807-2.026 1.297-3.323 1.297zm7.83-9.404h-1.297V6.287h1.297v1.297zm-4.346 1.297c-1.297 0-2.346 1.049-2.346 2.346s1.049 2.346 2.346 2.346 2.346-1.049 2.346-2.346-1.049-2.346-2.346-2.346z" />
+                                </svg>
+                            </a>
+
+                            <!-- Facebook -->
+                            <a href="https://www.facebook.com/share/17PnWwBiVv/" target="_blank" rel="noopener noreferrer"
+                                class="group bg-white/10 backdrop-blur-sm p-4 rounded-full border border-white/20 hover:border-blue-500/50 hover:bg-blue-500/20 transition-all duration-300 hover:scale-110">
+                                <svg class="w-8 h-8 text-white group-hover:text-blue-300 transition-colors"
+                                    fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                                </svg>
+                            </a>
+                        </div>
+
+
+                    <!-- Trust Indicators -->
+                    <div class="mt-12 pt-8 border-t border-white/20">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                            <div>
+                                <div class="text-3xl font-bold text-white mb-1">5K+</div>
+                                <div class="text-white/80 text-sm">Projects Completed</div>
+                            </div>
+                            <div>
+                                <div class="text-3xl font-bold text-white mb-1">50+</div>
+                                <div class="text-white/80 text-sm">Happy Clients</div>
+                            </div>
+                            <div>
+                                <div class="text-3xl font-bold text-white mb-1">12hrs</div>
+                                <div class="text-white/80 text-sm">Average Turnaround</div>
+                            </div>
+                            <div>
+                                <div class="text-3xl font-bold text-white mb-1">95.8%</div>
+                                <div class="text-white/80 text-sm">Satisfaction Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+ 
+  <!-- Footer -->
+  <footer class="relative bg-black/60 overflow-hidden">
+    <!-- Gradient Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-black/40 to-pink-900/30"></div>
+
+    <!-- Footer Content -->
+    <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14">
+      <div class="grid gap-8 sm:gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+        
+        <!-- Brand + Description -->
+        <div class="sm:col-span-2 lg:col-span-2 xl:col-span-2 space-y-4 sm:space-y-6">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-black flex items-center justify-center overflow-hidden flex-shrink-0">
+              <img
+                src="./assets/propic-removebg-preview-removebg-preview.png"
+                alt="Propic Studio Logo"
+                class="object-contain w-full h-full"
+              />
+            </div>
+            <span class="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              PROPICINFO
+            </span>
+          </div>
+
+          <p class="text-white/70 text-sm sm:text-base leading-relaxed max-w-md">
+            Professional photo editing services powered by technology and creativity.
+            Transforming ordinary images into extraordinary masterpieces since 2025.
+          </p>
+
+          <!-- Contact Info -->
+          <div class="space-y-3 pt-2 sm:pt-3">
+            <!-- Email -->
+            <div class="flex items-start space-x-3 text-white/70">
+              <svg xmlns="http://www.w3.org/2000/svg" class="text-purple-400 shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+              <a href="mailto:gokuljabde17@gmail.com" class="text-sm sm:text-base hover:text-pink-400 transition-colors break-words">
+                gokuljabde17@gmail.com
+              </a>
+            </div>
+
+            <!-- Phone -->
+            <div class="flex items-start space-x-3 text-white/70">
+              <svg xmlns="http://www.w3.org/2000/svg" class="text-purple-400 shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <a href="tel:+916383836187" class="text-sm sm:text-base hover:text-pink-400 transition-colors">
+                +91 6383836187
+              </a>
+            </div>
+
+            <!-- Address -->
+            <div class="flex items-start space-x-3 text-white/70">
+              <svg xmlns="http://www.w3.org/2000/svg" class="text-purple-400 shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              <span class="text-sm sm:text-base leading-snug">
+                Perundurai, Erode – Tamil Nadu 638056
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="space-y-4">
+          <h3 class="text-base sm:text-lg font-semibold text-white">Quick Links</h3>
+          <ul class="space-y-2 text-sm sm:text-base text-white/70">
+            <li><a href="#home" class="hover:text-pink-400 transition-colors inline-block">Home</a></li>
+            <li><a href="#about" class="hover:text-pink-400 transition-colors inline-block">About</a></li>
+            <li><a href="#process" class="hover:text-pink-400 transition-colors inline-block">Process</a></li>
+            <li><a href="#contact" class="hover:text-pink-400 transition-colors inline-block">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Services -->
+        <div class="space-y-4 sm:col-span-2 lg:col-span-1 xl:col-span-2">
+          <h3 class="text-base sm:text-lg font-semibold text-white">Our Services</h3>
+          <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-2 text-sm sm:text-base text-white/70">
+            <div class="space-y-2">
+              <a href="pages/ArialPhotosService.html" class="footer-link hover:text-pink-400 transition-colors block">Arial Photos Service</a>
+              <a href="pages/DayToDuskService.html" class="footer-link hover:text-pink-400 transition-colors block">Day To Dusk Service</a>
+              <a href="pages/FlashAmbientService.html" class="footer-link hover:text-pink-400 transition-colors block">Flash Ambient Service</a>
+              <a href="pages/HDRService.html" class="footer-link hover:text-pink-400 transition-colors block">HDR Service</a>
+              <a href="pages/LandEnhancementService.html" class="footer-link hover:text-pink-400 transition-colors block">Land Enhancement</a>
+              <a href="pages/NaturalEditService.html" class="footer-link hover:text-pink-400 transition-colors block">Natural Edit</a>
+            </div>
+            <div class="space-y-2">
+              <a href="pages/OutdoorService.html" class="footer-link hover:text-pink-400 transition-colors block">Outdoor Service</a>
+              <a href="pages/PatchRemovalsService.html" class="footer-link hover:text-pink-400 transition-colors block">Patch Removals</a>
+              <a href="pages/PhotosFromVideosService.html" class="footer-link hover:text-pink-400 transition-colors block">Photos From Videos</a>
+              <a href="pages/PortraitService.html" class="footer-link hover:text-pink-400 transition-colors block">Portrait</a>
+              <a href="pages/RealTwilightService.html" class="footer-link hover:text-pink-400 transition-colors block">Real Twilight</a>
+              <a href="pages/Service360.html" class="footer-link hover:text-pink-400 transition-colors block">Service 360</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="border-t border-white/10 mt-8 sm:mt-10 lg:mt-12 pt-5 sm:pt-6 text-center text-xs sm:text-sm text-white/60">
+        © 2025 PROPICINFO. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+
+
+
+      
+
+    <script>
+        // Scroll Effect
+        window.addEventListener('scroll', function () {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('bg-black/80', 'backdrop-blur-md', 'border-b', 'border-white/20', 'shadow-2xl');
+            } else {
+                header.classList.remove('bg-black/80', 'backdrop-blur-md', 'border-b', 'border-white/20', 'shadow-2xl');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+        const body = document.body;
+
+        // Mobile Services Dropdown
+        const mobileServicesBtn = document.getElementById('mobile-services-btn');
+        const mobileServicesDropdown = document.getElementById('mobile-services-dropdown');
+        const mobileServicesArrow = document.getElementById('mobile-services-arrow');
+
+        // Create overlay element
+        const overlay = document.createElement('div');
+        overlay.id = 'menu-overlay';
+        overlay.className = 'fixed inset-0 bg-black/50 z-40 hidden';
+        document.body.appendChild(overlay);
+
+        // Guard mobileMenuBtn in case element is missing in some views
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function () {
+                // If opening, set the inline maxHeight so the menu fills available viewport (below header)
+                const isOpen = mobileMenu.classList.contains('max-h-screen');
+
+                if (isOpen) {
+                    // Close menu
+                    mobileMenu.classList.remove('max-h-screen');
+                    mobileMenu.classList.add('max-h-0');
+                    // remove inline maxHeight so it reverts cleanly
+                    mobileMenu.style.maxHeight = '';
+                } else {
+                    // Open menu: compute available height below header
+                    const headerEl = document.getElementById('header');
+                    const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 0;
+                    const available = window.innerHeight - headerHeight;
+                    // ensure container can scroll within that space
+                    mobileMenu.style.maxHeight = available + 'px';
+                    mobileMenu.classList.remove('max-h-0');
+                    mobileMenu.classList.add('max-h-screen');
+                }
+
+                menuIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+                overlay.classList.toggle('hidden');
+                body.classList.toggle('overflow-hidden'); // Prevent scrolling on body
+            });
+        }
+
+        // Close mobile menu when clicking a link or overlay
+        if (mobileMenu) {
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    mobileMenu.classList.remove('max-h-screen');
+                    mobileMenu.classList.add('max-h-0');
+                    mobileMenu.style.maxHeight = '';
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                    overlay.classList.add('hidden');
+                    body.classList.remove('overflow-hidden');
+                });
+            });
+        }
+
+        if (overlay) {
+            overlay.addEventListener('click', function () {
+                mobileMenu.classList.remove('max-h-screen');
+                mobileMenu.classList.add('max-h-0');
+                mobileMenu.style.maxHeight = '';
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+                overlay.classList.add('hidden');
+                body.classList.remove('overflow-hidden');
+            });
+        }
+
+        // Mobile Services Dropdown Toggle — improved animation and stability
+        if (mobileServicesBtn && mobileServicesDropdown) {
+            mobileServicesBtn.addEventListener('click', function () {
+                const isOpen = mobileServicesDropdown.classList.contains('open');
+
+                if (isOpen) {
+                    // close
+                    mobileServicesDropdown.classList.remove('open');
+                    mobileServicesDropdown.style.maxHeight = '';
+                    mobileServicesDropdown.classList.add('hidden');
+                    mobileServicesArrow.classList.remove('rotate-180');
+                } else {
+                    // open: measure content height then set maxHeight for transition
+                    mobileServicesDropdown.classList.remove('hidden');
+                    // allow DOM to update
+                    requestAnimationFrame(() => {
+                        const contentHeight = mobileServicesDropdown.scrollHeight;
+                        mobileServicesDropdown.style.maxHeight = contentHeight + 'px';
+                        mobileServicesDropdown.classList.add('open');
+                        mobileServicesArrow.classList.add('rotate-180');
+                    });
+                }
+            });
+        }
+
+        // Desktop Services Dropdown
+        const servicesDropdown = document.querySelector('.services-dropdown');
+        const dropdownContent = servicesDropdown ? servicesDropdown.querySelector('.dropdown-content') : null;
+
+        // Detect if device supports hover; if not, use click toggles (avoids flicker on touch)
+        const supportsHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+
+        if (servicesDropdown && dropdownContent) {
+            const servicesDropdownBtn = servicesDropdown.querySelector('button');
+
+            // Use a portal (append to body) to avoid stacking-context issues
+            dropdownContent.style.zIndex = '9999';
+            const dropdownOriginalParent = dropdownContent.parentElement;
+            let servicesHideTimer = null;
+
+            function showDropdownPortal() {
+                const parentRect = servicesDropdown.getBoundingClientRect();
+                const scrollY = window.scrollY || window.pageYOffset;
+                const viewportWidth = window.innerWidth;
+
+                // Append to body so z-index stacking contexts don't interfere
+                if (dropdownContent.parentElement !== document.body) {
+                    document.body.appendChild(dropdownContent);
+                }
+
+                dropdownContent.style.position = 'absolute';
+                dropdownContent.style.top = (parentRect.bottom + scrollY) + 'px';
+
+                // compute left so we don't overflow viewport
+                const dropdownWidth = dropdownContent.getBoundingClientRect().width || 300;
+                if (parentRect.left + dropdownWidth > viewportWidth - 12) {
+                    const left = Math.max(12, parentRect.right - dropdownWidth);
+                    dropdownContent.style.left = left + 'px';
+                } else {
+                    dropdownContent.style.left = parentRect.left + 'px';
+                }
+
+                dropdownContent.classList.remove('hidden');
+            }
+
+            function hideDropdownPortal() {
+                dropdownContent.classList.add('hidden');
+                dropdownContent.style.left = '';
+                dropdownContent.style.top = '';
+                dropdownContent.style.position = '';
+
+                // restore to original parent if necessary
+                if (dropdownOriginalParent && dropdownContent.parentElement !== dropdownOriginalParent) {
+                    dropdownOriginalParent.appendChild(dropdownContent);
+                }
+            }
+
+            if (supportsHover) {
+                servicesDropdown.addEventListener('mouseenter', function () {
+                    if (servicesHideTimer) {
+                        clearTimeout(servicesHideTimer);
+                        servicesHideTimer = null;
+                    }
+                    showDropdownPortal();
+                });
+
+                servicesDropdown.addEventListener('mouseleave', function () {
+                    servicesHideTimer = setTimeout(() => {
+                        hideDropdownPortal();
+                        servicesHideTimer = null;
+                    }, 220);
+                });
+            } else {
+                if (servicesDropdownBtn) {
+                    servicesDropdownBtn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        if (dropdownContent.classList.contains('hidden')) {
+                            showDropdownPortal();
+                        } else {
+                            hideDropdownPortal();
+                        }
+                    });
+
+                    // Close when clicking outside
+                    document.addEventListener('click', function (ev) {
+                        if (!servicesDropdown.contains(ev.target) && !dropdownContent.contains(ev.target)) {
+                            hideDropdownPortal();
+                        }
+                    });
+                }
+            }
+        }
+
+        // Keep mobile menu and mobile services dropdown sizes correct on window resize
+        window.addEventListener('resize', function () {
+            const headerEl = document.getElementById('header');
+            const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 0;
+
+            // If mobile menu is open, recompute available height
+            if (mobileMenu && mobileMenu.classList.contains('max-h-screen')) {
+                mobileMenu.style.maxHeight = (window.innerHeight - headerHeight) + 'px';
+            }
+
+            // If mobile services dropdown is open, refresh its maxHeight
+            if (mobileServicesDropdown && mobileServicesDropdown.classList.contains('open')) {
+                mobileServicesDropdown.style.maxHeight = mobileServicesDropdown.scrollHeight + 'px';
+            }
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Hero Section Slideshow
+        const images = {
+            desktop: [
+                'assets/DSC05054.webp',
+                'assets/DSC06407.webp',
+                'assets/DSC05057.webp'
+            ],
+            // Larger images for very big displays (>=1600px)
+            desktopLarge: [
+                'assets/DSC05054.webp',
+                'assets/DSC06407.webp',
+                'assets/DSC05057.webp'
+            ],
+            tablet: [
+                'assets/DJI_20250825112534_0610_D.webp',
+                'assets/DSC05048.webp'
+            ],
+            mobile: [
+                'assets/DSC05048.webp',
+                'assets/DSC05054.webp'
+            ]
+        };
+
+        const words = ["Transform", "Enhance", "Perfect", "Elevate"];
+        let currentWordIndex = 0;
+        let currentBgIndex = 0;
+        let currentImages = [];
+
+        function getImagesForScreenSize() {
+            const width = window.innerWidth;
+            if (width <= 640) {
+                return images.mobile;
+            } else if (width <= 1024) {
+                return images.tablet;
+            } else if (width >= 1600) {
+                // very large screens: prefer desktopLarge set
+                return images.desktopLarge || images.desktop;
+            } else {
+                return images.desktop;
+            }
+        }
+
+        function initBackgrounds() {
+            currentImages = getImagesForScreenSize();
+            // start from first background on init for predictable rotation
+            currentBgIndex = 0;
+            const container = document.getElementById('bg-container');
+            container.innerHTML = '';
+
+            // Preload images to avoid flash/blank frames on first paint
+            const preloadPromises = currentImages.map(src => new Promise((resolve) => {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => resolve({ src, ok: true });
+                img.onerror = () => resolve({ src, ok: false });
+            }));
+
+            Promise.all(preloadPromises).then(() => {
+                currentImages.forEach((img, index) => {
+                    const div = document.createElement('div');
+                    div.className = `bg-slideshow ${index === 0 ? 'active' : 'inactive'}`;
+                    // Encode the URL and wrap in quotes to safely handle filenames with spaces
+                    div.style.backgroundImage = `url("${encodeURI(img)}")`;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function rotateWord() {
+            currentWordIndex = (currentWordIndex + 1) % words.length;
+            document.getElementById('rotating-word').textContent = words[currentWordIndex];
+        }
+
+        function rotateBackground() {
+            const backgrounds = document.querySelectorAll('.bg-slideshow');
+            if (!backgrounds || backgrounds.length === 0) return;
+
+            // Defensive guards in case indexes are out of range after a resize
+            const prevIndex = Math.min(currentBgIndex, backgrounds.length - 1);
+            backgrounds[prevIndex].classList.remove('active');
+            backgrounds[prevIndex].classList.add('inactive');
+
+            currentBgIndex = (prevIndex + 1) % backgrounds.length;
+
+            backgrounds[currentBgIndex].classList.remove('inactive');
+            backgrounds[currentBgIndex].classList.add('active');
+        }
+
+        initBackgrounds();
+        setInterval(rotateWord, 3000);
+        setInterval(rotateBackground, 6000);
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                const newImages = getImagesForScreenSize();
+                if (JSON.stringify(newImages) !== JSON.stringify(currentImages)) {
+                    currentBgIndex = 0;
+                    initBackgrounds();
+                }
+            }, 250);
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.group').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // Portfolio Section
+        const portfolioItems = [
+            {
+                id: 1,
+                category: 'REAL ESTATE',
+                title: 'Luxury Villa Enhancement',
+                image: 'assets/real after second.webp',
+                description: 'HDR processing and sky replacement for stunning property showcase',
+                tags: ['HDR', 'Sky Replacement', 'Color Grading']
+            },
+            {
+                id: 2,
+                category: 'PORTRAIT',
+                title: 'Professional Product Enhancement',
+                image: 'assets/Motto brand shoot_001.webp',
+                description: 'Clean background removal for professional e-commerce listings',
+                tags: ['Background Removal', 'Color Correction', 'Product Enhancement']
+            },
+            {
+                id: 3,
+                category: 'HDR',
+                title: 'Professional HDR Processing',
+                image: 'assets/hdr aft.webp',
+                description: 'Natural HDR enhancement with perfect lighting balance',
+                tags: ['HDR Processing', 'Lighting', 'Dynamic Range']
+            },
+            {
+                id: 4,
+                category: 'AERIAL PHOTOS',
+                title: 'Aerial Photography Enhancement',
+                image: 'assets/top aft.webp',
+                description: 'Professional aerial photo editing and color grading',
+                tags: ['Aerial Photography', 'Color Grading', 'Landscape']
+            },
+            {
+                id: 5,
+                category: 'DAY TO DUSK',
+                title: 'Day to Dusk Conversion',
+                image: 'assets/day aft.webp',
+                description: 'Professional day to dusk transformation for real estate',
+                tags: ['Day to Dusk', 'Real Estate', 'Lighting Effects']
+            },
+            {
+                id: 6,
+                category: '360 PHOTOS',
+                title: '360 Photo Enhancement',
+                image: 'assets/360 aft.webp',
+                description: '360-degree photo editing and stitching services',
+                tags: ['360 Photography', 'Panoramic', 'Virtual Tours']
+            },
+            {
+                id: 7,
+                category: 'TWILIGHT',
+                title: 'Real Twilight Enhancement',
+                image: 'assets/tiwilight.webp',
+                description: 'Magical twilight hour photography enhancement',
+                tags: ['Twilight', 'Golden Hour', 'Atmospheric']
+            },
+            {
+                id: 8,
+                category: 'SINGLE IMAGES',
+                title: 'Single Image Enhancement',
+                image: 'assets/single bef.webp',
+                description: 'Professional single image retouching and enhancement',
+                tags: ['Retouching', 'Enhancement', 'Professional']
+            },
+            {
+                id: 9,
+                category: 'FLASH AMBIENT',
+                title: 'Flash Ambient Blending',
+                image: 'assets/flash aft.webp',
+                description: 'Perfect flash and ambient light blending techniques',
+                tags: ['Flash Photography', 'Ambient Lighting', 'Blending']
+            },
+            {
+                id: 10,
+                category: 'LAND ENHANCEMENT',
+                title: 'Landscape Enhancement',
+                image: 'assets/DJI_0362.webp',
+                description: 'Natural landscape photography enhancement services',
+                tags: ['Landscape', 'Nature', 'Enhancement']
+            },
+            {
+                id: 11,
+                category: 'NATURAL EDIT',
+                title: 'Natural Photo Editing',
+                image: 'assets/natual aft.webp',
+                description: 'Subtle and natural photo editing techniques',
+                tags: ['Natural Editing', 'Subtle Enhancement', 'Organic Look']
+            },
+            {
+                id: 12,
+                category: 'OUTDOOR',
+                title: 'Outdoor Photography Enhancement',
+                image: 'assets/outdoor aft.webp',
+                description: 'Professional outdoor photography editing services',
+                tags: ['Outdoor Photography', 'Nature', 'Adventure']
+            }
+        ];
+
+
+        let activeCategory = 'all';
+        let hoveredItem = null;
+
+        function getServiceIcon(category) {
+            const icons = {
+                'REAL ESTATE': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>',
+                'DAY TO DUSK': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>',
+                'HDR': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>',
+                'FLASH AMBIENT': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>',
+            };
+            return icons[category] || '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>';
+        }
+
+        // Incremental portfolio rendering with Load More support
+        const DEFAULT_DISPLAY_LIMIT = 9; // show first 9 items by default
+        let currentDisplayLimit = DEFAULT_DISPLAY_LIMIT;
+        let currentFilteredItems = portfolioItems.slice();
+
+        function renderPortfolioItems(category) {
+            const grid = document.getElementById('portfolioGrid');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+            const items = category === 'all' ? portfolioItems : portfolioItems.filter(item => item.category === category);
+            currentFilteredItems = items;
+
+            grid.innerHTML = '';
+
+            // determine how many to show
+            const toShow = Math.min(currentDisplayLimit, items.length);
+
+            items.slice(0, toShow).forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card-item group relative bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700/30 hover:border-purple-500/50 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/10';
+                card.dataset.id = item.id;
+
+                card.innerHTML = `
+                <div class="relative h-64 overflow-hidden">
+                    <img 
+                        width="634"
+                        height="448"
+                        src="${encodeURI(item.image)}"
+                        alt="${item.title}"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    
+                    <div class="card-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-500 opacity-0">
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                ${item.tags.slice(0, 2).map(tag => `
+                                    <span class="px-2 py-1 bg-purple-500/20 backdrop-blur-sm rounded-md text-xs text-purple-200 border border-purple-400/20">
+                                        ${tag}
+                                    </span>
+                                `).join('')}
+                            </div>
+                            
+                            <p class="text-white/90 text-sm leading-relaxed">
+                                ${item.description}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="view-icon absolute top-4 right-4 w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg">
+                            ${getServiceIcon(item.category)}
+                        </div>
+                        
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-lg font-bold text-white truncate">
+                                ${item.category}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                card.addEventListener('mouseenter', function () {
+                    const overlay = this.querySelector('.card-overlay');
+                    const viewIcon = this.querySelector('.view-icon');
+
+                    if (overlay) overlay.classList.remove('opacity-0');
+                    if (overlay) overlay.classList.add('opacity-100');
+                    if (viewIcon) viewIcon.classList.add('scale-110', 'bg-purple-500/20');
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    const overlay = this.querySelector('.card-overlay');
+                    const viewIcon = this.querySelector('.view-icon');
+
+                    if (overlay) overlay.classList.remove('opacity-100');
+                    if (overlay) overlay.classList.add('opacity-0');
+                    if (viewIcon) viewIcon.classList.remove('scale-110', 'bg-purple-500/20');
+                });
+
+                grid.appendChild(card);
+
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, index * 100);
+            });
+
+            // Manage Load More button visibility
+            if (loadMoreBtn) {
+                if (items.length > toShow) {
+                    loadMoreBtn.classList.remove('hidden');
+                } else {
+                    loadMoreBtn.classList.add('hidden');
+                }
+            }
+        }
+
+        // Category buttons: reset display limit on new filter
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.category-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-gradient-to-r', 'from-purple-500', 'to-pink-500', 'text-white', 'shadow-lg', 'shadow-purple-500/25');
+                    b.classList.add('bg-slate-800/50', 'text-slate-300', 'hover:bg-slate-700/50', 'border', 'border-slate-700/50', 'hover:border-purple-500/30');
+                });
+
+                this.classList.add('active', 'bg-gradient-to-r', 'from-purple-500', 'to-pink-500', 'text-white', 'shadow-lg', 'shadow-purple-500/25');
+                this.classList.remove('bg-slate-800/50', 'text-slate-300', 'hover:bg-slate-700/50', 'border', 'border-slate-700/50', 'hover:border-purple-500/30');
+
+                const category = this.dataset.category;
+                // reset display limit when changing category
+                currentDisplayLimit = DEFAULT_DISPLAY_LIMIT;
+                activeCategory = category; // remember selected category for Load More
+                renderPortfolioItems(category);
+            });
+        });
+
+        // Wire Load More button
+        const loadMoreBtnEl = document.getElementById('loadMoreBtn');
+        if (loadMoreBtnEl) {
+            loadMoreBtnEl.addEventListener('click', function () {
+                // show all remaining items
+                currentDisplayLimit = currentFilteredItems.length;
+                renderPortfolioItems(activeCategory || 'all');
+                // hide button after expanding
+                this.classList.add('hidden');
+            });
+        }
+
+        // initial render
+        renderPortfolioItems('all');
+
+        // CTA Section
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'absolute w-2 h-2 bg-white/20 rounded-full animate-pulse';
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.animationDelay = `${Math.random() * 2}s`;
+            particlesContainer.appendChild(particle);
+        }
+
+        /* const form = document.getElementById('subscribeForm');
+        const emailInput = document.getElementById('emailInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const arrowIcon = document.getElementById('arrowIcon');
+        const checkIcon = document.getElementById('checkIcon');
+        const successMessage = document.getElementById('successMessage');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (emailInput.value) {
+                arrowIcon.classList.add('hidden');
+                checkIcon.classList.remove('hidden');
+                successMessage.classList.remove('hidden');
+                submitBtn.disabled = true;
+
+                setTimeout(() => {
+                    arrowIcon.classList.remove('hidden');
+                    checkIcon.classList.add('hidden');
+                    successMessage.classList.add('hidden');
+                    submitBtn.disabled = false;
+                    emailInput.value = '';
+                }, 3000);
+            }
+        }); */
+    </script>
+
+    <!-- EmailJS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // EmailJS integration (disabled by default).
+        // To enable: replace placeholders (YOUR_PUBLIC_KEY, YOUR_SERVICE_ID, YOUR_TEMPLATE_ID)
+        // and uncomment the block below.
+        /*
+        // Initialize EmailJS with your public key
+        emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+
+        // Contact form handler
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const buttonText = document.getElementById('buttonText');
+            const arrowIcon = document.getElementById('arrowIcon');
+            const checkIcon = document.getElementById('checkIcon');
+            const successMessage = document.getElementById('successMessage');
+
+            // Show loading state
+            submitBtn.disabled = true;
+            buttonText.textContent = 'Sending...';
+            arrowIcon.classList.add('hidden');
+
+            // Get form data
+            const formData = {
+                from_name: document.getElementById('nameInput').value,
+                from_email: document.getElementById('emailInput').value,
+                message: document.getElementById('messageInput').value,
+                to_name: 'Propic Studio', // Your business name
+            };
+
+            // Send email using EmailJS
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', formData)
+                .then(function (response) {
+                    console.log('SUCCESS!', response.status, response.text);
+
+                    // Show success state
+                    buttonText.textContent = 'Sent!';
+                    checkIcon.classList.remove('hidden');
+                    successMessage.classList.remove('hidden');
+
+                    // Reset form
+                    document.getElementById('contactForm').reset();
+
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        buttonText.textContent = 'Send Message';
+                        checkIcon.classList.add('hidden');
+                        arrowIcon.classList.remove('hidden');
+                        successMessage.classList.add('hidden');
+                    }, 3000);
+
+                }, function (error) {
+                    console.log('FAILED...', error);
+
+                    // Show error state
+                    buttonText.textContent = 'Failed - Try Again';
+                    submitBtn.disabled = false;
+                    arrowIcon.classList.remove('hidden');
+
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        buttonText.textContent = 'Send Message';
+                    }, 3000);
+
+                    alert('Failed to send message. Please try again or contact us directly.');
+                });
+        });
+        */
+    </script>
+</body>
+
+</html>
